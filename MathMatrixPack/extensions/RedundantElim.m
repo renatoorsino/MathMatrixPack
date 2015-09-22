@@ -1,0 +1,1 @@
+RedundantElim[xX_] := DeleteDuplicates @ (DeleteCases[Simplify @ xX, 0]);
