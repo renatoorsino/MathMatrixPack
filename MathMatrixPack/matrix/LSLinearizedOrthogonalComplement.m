@@ -23,7 +23,7 @@ LSNumericalOrthogonalComplement[xJacobian_,xIndependentVariablesList_List] :=
 
 
 LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVariables_List,
-	xCoordinatesReplacements_:{}, xNZero_Rational:1 10^-5, xTestParameters_List:{}]:=
+	xCoordinatesReplacements_:{}, xSymmetry_: Automatic, xNZero_Rational:1 10^-5, xTestParameters_List:{}]:=
 	Module[{x, xE, xLSOC, xCoordinates, xLinearizedJacobianCoefficients, 
 		xNTestParameters, xNA1, xNC1, xNCq, xSC1, xSCq},
 		
@@ -31,10 +31,14 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 			SMatrixCoefficientArrays[xLinearizedJacobian];
 		xNTestParameters = Union[
 			xTestParameters,
-			(#-> RandomReal[1])& /@ (GetAllVariables[(Flatten @ (Union @@ (Normal @ 
-				(#["Matrix"])& /@ xLinearizedJacobianCoefficients))) //. xTestParameters])
+			If[xSymmetry === Automatic,
+				(#-> RandomReal[1])& /@ (GetAllVariables[(Flatten @ (Union @@ (Normal @ 
+					(#["Matrix"])& /@ xLinearizedJacobianCoefficients))) //. xTestParameters]),
+				xSymmetry /@ (GetAllVariables[(Flatten @ (Union @@ (Normal @ 
+					(#["Matrix"])& /@ xLinearizedJacobianCoefficients))) //. xTestParameters])
+				]
 			];
-		
+
 		xNA1 = SReplaceRepeated[xLinearizedJacobianCoefficients[1], xNTestParameters];
 		xNC1 = LSNumericalOrthogonalComplement[xNA1, xIndependentVariables];
 		
