@@ -22,7 +22,7 @@ LSNumericalOrthogonalComplement[xJacobian_, xIndependentVariablesList_List] :=
 		]
 
 LSReferenceOrthogonalComplement[xJacobian_Association, xIndependentVariables_List, 
-	xSymmetry_: Automatic, xTestParameters_List: {}, xNZero_Rational:1 10^-5,] :=	
+	xSymmetry_: Automatic, xTestParameters_List: {}, xNZero_Rational:1 10^-5] :=	
 	Module[{x, xNC, xSC, xNTestParameters},
 		xNTestParameters = Union[
 			xTestParameters,
