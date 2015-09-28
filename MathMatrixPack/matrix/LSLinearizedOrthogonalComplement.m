@@ -94,7 +94,7 @@ LSReferenceOrthogonalComplement[xJacobian_Association, xIndependentVariables_Lis
 
 
 LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVariables_List,
-	xCoordinatesReplacements_: {}, xSymmetry_: Automatic, xTestParameters_List: {}, xNZero_Rational:1 10^-5,] :=
+	xCoordinatesReplacements_: {}, xSymmetry_: Automatic, xTestParameters_List: {}, xNZero_Rational:1 10^-5] :=
 	Module[{x, xE, xLSOC, xCoordinates, xLinearizedJacobianCoefficients, 
 		xNTestParameters, xNA1, xNC1, xNCq, xSC1, xSCq},
 		
