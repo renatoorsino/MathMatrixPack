@@ -28,9 +28,9 @@ LSReferenceOrthogonalComplement[xJacobian_Association, xIndependentVariables_Lis
 			xTestParameters,
 			If[xSymmetry === Automatic,
 				(#-> RandomReal[1])& /@ (GetAllVariables[(Flatten @ (Union @@ (Normal @ 
-					(#["Matrix"])& /@ xLinearizedJacobianCoefficients))) //. xTestParameters]),
+					(#["Matrix"])& @ xJacobian))) //. xTestParameters]),
 				xSymmetry["Function"] /@ (GetAllVariables[(Flatten @ (Union @@ (Normal @ 
-					(#["Matrix"])& /@ xLinearizedJacobianCoefficients))) //. xTestParameters])
+					(#["Matrix"])& @ xJacobian))) //. xTestParameters])
 				]
 			];
 		xNC = LSNumericalOrthogonalComplement[
@@ -61,15 +61,21 @@ LSReferenceOrthogonalComplement[xJacobian_Association, xIndependentVariables_Lis
 				]/@ x["Row Labels"],
 			(*-FALSE-*)	
 			Function[{xRowLabel},
-				If[Not @ And[
+				If[Intersection[xSymmetry["Secondary"], 
+					Flatten @ (Characters /@ Select[xRowLabel /. {Subscript[xV_, xS__] -> {xV, xS}, xV_ -> {xV}}, StringQ])
+   					] === {}
+					(* Not @ And[
 					StringQ[Quiet @ Last[xRowLabel]], 
 					StringTake[Last[xRowLabel], -1] === xSymmetry["Secondary"]
-					],
+					] *),
 					x["Row Number"] = First @ (Flatten @ Position[x["Row Labels"], xRowLabel]);
-					x["New Subscript"] = If[Quiet @ (StringTake[Last[xRowLabel], -1] === xSymmetry["Primary"]), 
-						Subscript @@ (If[StringQ[#], StringReplace[#, xSymmetry["Primary"] -> ""], #] & /@
-							(xRowLabel /. (Subscript[xV_, xS__] -> {xV, xS}))),
-						xRowLabel
+					x["New Subscript"] = If[Intersection[xSymmetry["Primary"], 
+						Flatten @ (Characters /@ Select[xRowLabel /. {Subscript[xV_, xS__] -> {xV, xS}, xV_ -> {xV}}, StringQ])
+   						] === {}
+						(* Quiet @ (StringTake[Last[xRowLabel], -1] === xSymmetry["Primary"]) *), 
+						xRowLabel,
+						Subscript @@ (If[StringQ[#], StringReplace[#, (# -> "")& /@ xSymmetry["Primary"]], #] & /@
+							(xRowLabel /. (Subscript[xV_, xS__] -> {xV, xS})))
 						];
 					x["Parameters Values"] = Flatten @ (Part[xNC["Matrix"], x["Row Number"]]);
 					x["Parameters Names"] = Flatten @ ((Function[{xLabel}, 
@@ -83,8 +89,9 @@ LSReferenceOrthogonalComplement[xJacobian_Association, xIndependentVariables_Lis
 					x["New Parameters"] = Union[
 						x["New Parameters"],
 						(Reverse /@ x["New Parameters:2"]),
-						(Reverse /@ x["New Parameters:2"]) /. ((xA_ -> xB_) -> (-xA -> -xB))];
+						(Reverse /@ x["New Parameters:2"]) /. ((xA_ -> xB_) -> (-xA -> -xB))
 						];
+					];
 				] /@ x["Row Labels"];
 			];
 		xSC = Association[xNC, "Matrix"-> (xNC["Matrix"] //. x["New Parameters"]), 
@@ -114,7 +121,7 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 		xNC1 = LSNumericalOrthogonalComplement[xNA1, xIndependentVariables];
 		xNC1 = AppendTo[xNC1, "Matrix" -> Round[xNC1["Matrix"], xNZero]];
 		x["Column Labels"] = xNC1["Column Labels"] //. SymbolReplacements;
-		x["Row Labels"]= xNC1["Row Labels"] //.SymbolReplacements;
+		x["Row Labels"]= xNC1["Row Labels"] //. SymbolReplacements;
 		
 		xE = 1 10^-3;
 		xNCq = Association[
@@ -159,15 +166,21 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 				]/@ x["Row Labels"],
 			(*-FALSE-*)	
 			Function[{xRowLabel},
-				If[Not @ And[
+				If[Intersection[xSymmetry["Secondary"], 
+					Flatten @ (Characters /@ Select[xRowLabel /. {Subscript[xV_, xS__] -> {xV, xS}, xV_ -> {xV}}, StringQ])
+   					] === {}
+					(* Not @ And[
 					StringQ[Quiet @ Last[xRowLabel]], 
 					MemberQ[xSymmetry["Secondary"], StringTake[Last[xRowLabel], -1]]
-					],
+					] *),
 					x["Row Number"] = First @ (Flatten @ Position[x["Row Labels"], xRowLabel]);
-					x["New Subscript"] = If[Quiet @ (StringTake[Last[xRowLabel], -1] === xSymmetry["Primary"]), 
-						Subscript @@ (If[StringQ[#], StringReplace[#, xSymmetry["Primary"] -> ""], #] & /@
-							(xRowLabel /. (Subscript[xV_, xS__] -> {xV, xS}))),
-						xRowLabel
+					x["New Subscript"] = If[Intersection[xSymmetry["Primary"], 
+						Flatten @ (Characters /@ Select[xRowLabel /. {Subscript[xV_, xS__] -> {xV, xS}, xV_ -> {xV}}, StringQ])
+   						] === {}
+						(* Quiet @ (StringTake[Last[xRowLabel], -1] === xSymmetry["Primary"]) *), 
+						xRowLabel,
+						Subscript @@ (If[StringQ[#], StringReplace[#, (# -> "")& /@ xSymmetry["Primary"]], #] & /@
+							(xRowLabel /. (Subscript[xV_, xS__] -> {xV, xS})))
 						];
 					x["Parameters Values"] = Flatten @ (Join[
 						Part[xNC1["Matrix"], x["Row Number"]],
@@ -181,7 +194,7 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 							Function[{xLabel}, 
 								Subscript[OverBar[\[CapitalDelta]], #, x["New Subscript"], xLabel]
 								]) /@ x["Column Labels"]
-							) & /@ (xCoordinates //. PrettyReplacements))
+							) & /@ (xCoordinates //. SymbolReplacements))
 						]);
 					x["New Parameters:1"] = MapThread[(#2 -> #1) &, 
 						{x["Parameters Values"], x["Parameters Names"]}, 1];
@@ -191,8 +204,9 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 					x["New Parameters"] = Union[
 						x["New Parameters"],
 						(Reverse /@ x["New Parameters:2"]),
-						(Reverse /@ x["New Parameters:2"]) /. ((xA_ -> xB_) -> (-xA -> -xB))];
+						(Reverse /@ x["New Parameters:2"]) /. ((xA_ -> xB_) -> (-xA -> -xB))
 						];
+					];
 				] /@ x["Row Labels"];
 			];
 
@@ -201,4 +215,4 @@ LSLinearizedOrthogonalComplement[xLinearizedJacobian_Association, xIndependentVa
 		xLSOC = SAssemble[xSC1, Inner[#1 ~SDot~ #2&, xCoordinates, xSCq /@ xCoordinates, SAssemble]];
 		xLSOC["Test Parameters"] = xNTestParameters;
 		xLSOC
-		]		
+		]
