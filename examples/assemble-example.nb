@@ -1,0 +1,1294 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     45950,       1285]
+NotebookOptionsPosition[     44683,       1238]
+NotebookOutlinePosition[     45038,       1254]
+CellTagsIndexPosition[     44995,       1251]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["DEFINITIONS", "Section",
+ CellChangeTimes->{{3.6567610762415037`*^9, 3.6567611065691853`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"AssembleToDictionary", "[", "xA_Association", "]"}], " ", "/;", 
+    " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"ArrayDepth", "[", 
+       RowBox[{"xA", "[", "\"\<Matrix\>\"", "]"}], "]"}], " ", ">", " ", 
+      "1"}], ")"}]}], " ", ":=", "\n", "\t", 
+   RowBox[{"Association", " ", "@", " ", 
+    RowBox[{"Flatten", " ", "@", " ", 
+     RowBox[{"MapThread", "[", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"#1", " ", "\[Rule]", " ", "#2"}], ")"}], " ", "&"}], ",", 
+       " ", 
+       RowBox[{"{", "\n", "\t\t", 
+        RowBox[{
+         RowBox[{"Outer", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{"#1", ",", " ", "#2"}], "}"}], " ", "&"}], ",", " ", 
+           RowBox[{"xA", "[", "\"\<Row Labels\>\"", "]"}], ",", " ", 
+           RowBox[{"xA", "[", "\"\<Column Labels\>\"", "]"}]}], "]"}], ",", 
+         " ", "\n", "\t\t", 
+         RowBox[{"xA", "[", "\"\<Matrix\>\"", "]"}]}], "\n", "\t\t", "}"}], 
+       ",", " ", "2"}], "]"}]}]}]}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{"AssembleToDictionary", "[", "xA_Association", "]"}], " ", ":=", 
+  "\n", "\t", 
+  RowBox[{"Association", " ", "@", " ", 
+   RowBox[{"Flatten", " ", "@", " ", 
+    RowBox[{"MapThread", "[", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"#1", " ", "\[Rule]", " ", "#2"}], ")"}], " ", "&"}], ",", 
+      " ", 
+      RowBox[{"{", "\n", "\t\t", 
+       RowBox[{
+        RowBox[{"xA", "[", "\"\<Row Labels\>\"", "]"}], ",", "\n", "\t\t", 
+        RowBox[{"xA", "[", "\"\<Matrix\>\"", "]"}]}], "\n", "\t\t", "}"}], 
+      ",", " ", "1"}], "]"}]}]}]}]}], "Code",
+ CellChangeTimes->{
+  3.656759225148403*^9, {3.656759290837186*^9, 3.6567592922597647`*^9}, {
+   3.656759335624736*^9, 3.656759344718622*^9}, {3.656759667054441*^9, 
+   3.6567596670596943`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Assemble", "[", "xA__Association", "]"}], " ", ":=", "\n", "\t", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "xAList", ",", " ", "xRowLabels", ",", " ", "xColumnLabels", ",", " ", 
+        "xRList"}], "}"}], ",", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"xAList", " ", "=", " ", 
+        RowBox[{"List", "[", "xA", "]"}]}], ";", "\n", "\t\t", 
+       RowBox[{"xRowLabels", " ", "=", " ", 
+        RowBox[{"Union", " ", "@", " ", 
+         RowBox[{"(", 
+          RowBox[{"Join", " ", "@@", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"#", "[", "\"\<Row Labels\>\"", "]"}], ")"}], " ", 
+              "&"}], " ", "/@", " ", "xAList"}], ")"}]}], ")"}]}]}], ";", 
+       "\n", "\t\t", 
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"And", " ", "@@", " ", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"KeyExistsQ", "[", 
+              RowBox[{"#", ",", " ", "\"\<Column Labels\>\""}], "]"}], "&"}], 
+            " ", "/@", " ", "xAList"}], ")"}]}], ",", "\n", "\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"-", "TRUE"}], "-"}], "*)"}], "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"xColumnLabels", " ", "=", " ", 
+           RowBox[{"Union", " ", "@", " ", 
+            RowBox[{"(", 
+             RowBox[{"Join", " ", "@@", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"(", 
+                  RowBox[{"#", "[", "\"\<Column Labels\>\"", "]"}], ")"}], 
+                 " ", "&"}], " ", "/@", " ", "xAList"}], ")"}]}], ")"}]}]}], 
+          ";", "\n", "\t\t\t", 
+          RowBox[{"xRList", " ", "=", " ", 
+           RowBox[{"Association", " ", "@", " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"#", " ", "\[Rule]", " ", 
+                 RowBox[{"Plus", " ", "@@", " ", 
+                  RowBox[{"DeleteCases", "[", 
+                   RowBox[{
+                    RowBox[{"#", " ", "/.", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    "AssembleToDictionary", " ", "/@", " ", "xAList"}], 
+                    ")"}]}], ",", " ", "#"}], "]"}]}]}], ")"}], " ", "&"}], 
+              " ", "/@", "\n", "\t\t\t\t", 
+              RowBox[{"Flatten", "[", 
+               RowBox[{
+                RowBox[{"Outer", "[", 
+                 RowBox[{
+                  RowBox[{
+                   RowBox[{"{", 
+                    RowBox[{"#1", ",", " ", "#2"}], "}"}], " ", "&"}], ",", 
+                  " ", "xRowLabels", ",", " ", "xColumnLabels"}], "]"}], ",", 
+                " ", "1"}], "]"}]}], ")"}]}]}], ";", "\n", "\t\t\t", 
+          RowBox[{"Association", "[", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+              RowBox[{"Outer", "[", 
+               RowBox[{
+                RowBox[{
+                 RowBox[{"{", 
+                  RowBox[{"#1", ",", " ", "#2"}], "}"}], " ", "&"}], ",", " ",
+                 "xRowLabels", ",", " ", "xColumnLabels"}], "]"}]}], " ", "/.",
+              " ", "xRList"}], ",", "\n", "\t\t\t\t", 
+            RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}],
+             ",", "\n", "\t\t\t\t", 
+            RowBox[{
+            "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}],
+            "\n", "\t\t\t\t", "]"}]}], ",", "\n", "\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"-", "FALSE"}], "-"}], "*)"}], "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"xRList", " ", "=", " ", 
+           RowBox[{"Association", " ", "@", " ", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"#", " ", "\[Rule]", " ", 
+                 RowBox[{"Plus", " ", "@@", " ", 
+                  RowBox[{"DeleteCases", "[", 
+                   RowBox[{
+                    RowBox[{"#", " ", "/.", " ", 
+                    RowBox[{"(", 
+                    RowBox[{
+                    "AssembleToDictionary", " ", "/@", " ", "xAList"}], 
+                    ")"}]}], ",", " ", "#"}], "]"}]}]}], ")"}], " ", "&"}], 
+              " ", "/@", "\n", "\t\t\t\t", "xRowLabels"}], ")"}]}]}], ";", 
+          "\n", "\t\t\t", 
+          RowBox[{"Association", "[", "\n", "\t\t\t\t", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", "xRowLabels"}], 
+             " ", "/.", " ", "xRList"}], ",", "\n", "\t\t\t\t", 
+            RowBox[{
+            "\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}]}], "\n",
+            "\t\t\t\t", "]"}]}]}], "\t", "\n", "\t\t\t", "]"}]}]}], "\t", 
+     "\n", "\t\t", "]"}]}], "*)"}], "\n", "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Assemble", "[", "xA__Association", "]"}], " ", ":=", "\n", "\t", 
+    
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"xAA", ",", " ", "xRowLabels", ",", " ", "xColumnLabels"}], 
+       "}"}], ",", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"xAA", " ", "=", " ", 
+        RowBox[{"Merge", "[", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{"AssembleToDictionary", " ", "/@", " ", 
+            RowBox[{"(", 
+             RowBox[{"List", " ", "@", " ", "xA"}], ")"}]}], ")"}], ",", " ", 
+          "Total"}], "]"}]}], ";", "\n", "\t\t", 
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"ArrayDepth", "[", 
+           RowBox[{"Keys", "[", "xAA", "]"}], "]"}], " ", ">", " ", "1"}], 
+         ",", " ", "\n", "\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"-", "TRUE"}], "-"}], "*)"}], "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"xRowLabels", " ", "=", " ", 
+           RowBox[{"Union", "[", 
+            RowBox[{
+             RowBox[{"Keys", "[", "xAA", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", "1"}], "]"}], "]"}], "]"}]}], ";", "\n", 
+          "\t\t\t", 
+          RowBox[{"xColumnLabels", " ", "=", " ", 
+           RowBox[{"Union", "[", 
+            RowBox[{
+             RowBox[{"Keys", "[", "xAA", "]"}], "[", 
+             RowBox[{"[", 
+              RowBox[{"All", ",", "2"}], "]"}], "]"}], "]"}]}], ";", "\n", 
+          "\t\t\t", 
+          RowBox[{"<|", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"\"\<Matrix\>\"", "\[Rule]", " ", 
+             RowBox[{"Map", "[", "\n", "\t\t\t\t", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Lookup", "[", 
+                 RowBox[{"xAA", ",", " ", "#", ",", " ", "0"}], "]"}], "&"}], 
+               ",", " ", "\n", "\t\t\t\t", 
+               RowBox[{"Outer", "[", 
+                RowBox[{
+                "List", ",", " ", "xRowLabels", ",", " ", "xColumnLabels"}], 
+                "]"}], ",", "\n", "\t\t\t\t", 
+               RowBox[{"{", "1", "}"}]}], "\n", "\t\t\t\t", "]"}]}], ",", 
+            "\n", "\t\t\t", 
+            RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}],
+             ",", "\n", "\t\t\t", 
+            RowBox[{
+            "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}],
+            "\n", "\t\t\t", "|>"}]}], ",", "\n", "\t\t\t", 
+         RowBox[{"(*", 
+          RowBox[{
+           RowBox[{"-", "FALSE"}], "-"}], "*)"}], "\n", "\t\t\t", 
+         RowBox[{
+          RowBox[{"xRowLabels", " ", "=", " ", 
+           RowBox[{"Union", "[", 
+            RowBox[{"Keys", "[", "xAA", "]"}], "]"}]}], ";", "\n", "\t\t\t", 
+          RowBox[{"<|", "\n", "\t\t\t", 
+           RowBox[{
+            RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+             RowBox[{"Lookup", "[", 
+              RowBox[{"xAA", ",", " ", "xRowLabels", ",", " ", "0"}], "]"}]}],
+             ",", "\n", "\t\t\t", 
+            RowBox[{
+            "\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}]}], "\n",
+            "\t\t\t", "|>"}]}]}], "\n", "\t\t\t", "]"}]}]}], "\t\t", "\n", 
+     "\t\t", "]"}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Assemble", "[", 
+      RowBox[{"xMatrix_List", ",", " ", "xLabels_List"}], "]"}], " ", "/;", 
+     " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"ArrayDepth", "[", "xMatrix", "]"}], " ", "===", " ", "1"}], 
+      ")"}]}], " ", ":=", "\n", "\t", 
+    RowBox[{"Assemble", " ", "@", " ", 
+     RowBox[{"Association", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", "xMatrix"}], ",", "\n", 
+       "\t\t", 
+       RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xLabels"}]}], " ", 
+      "\n", "\t\t", "]"}]}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Assemble", "[", 
+      RowBox[{"xMatrix_List", ",", " ", "xColumnLabels_List"}], "]"}], " ", "/;",
+      " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"ArrayDepth", "[", "xMatrix", "]"}], " ", ">", " ", "1"}], 
+      ")"}]}], " ", ":=", "\n", "\t", 
+    RowBox[{"Assemble", " ", "@", " ", 
+     RowBox[{"Association", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", "xMatrix"}], ",", "\n", 
+       "\t\t", 
+       RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", 
+        RowBox[{"Range", " ", "@", " ", 
+         RowBox[{"(", 
+          RowBox[{"First", " ", "@", " ", 
+           RowBox[{"(", 
+            RowBox[{"Dimensions", " ", "@", " ", "xMatrix"}], ")"}]}], 
+          ")"}]}]}], ",", "\n", "\t\t", 
+       RowBox[{
+       "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}], 
+      "\n", "\t\t", "]"}]}]}], "\t\t", "\n", "\n", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"Assemble", "[", 
+      RowBox[{
+      "xMatrix_List", ",", " ", "xRowLabels_List", ",", " ", 
+       "xColumnLabels_List"}], "]"}], " ", "/;", " ", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"ArrayDepth", "[", "xMatrix", "]"}], " ", ">", " ", "1"}], 
+      ")"}]}], " ", ":=", "\n", "\t", 
+    RowBox[{"Assemble", " ", "@", " ", 
+     RowBox[{"Association", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", "xMatrix"}], ",", "\n", 
+       "\t\t", 
+       RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}], ",",
+        "\n", "\t\t", 
+       RowBox[{
+       "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}], 
+      "\n", "\t\t", "]"}]}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{"0", ",", " ", "xRowLabels_List"}], "]"}], " ", ":=", "\n", "\t", 
+    RowBox[{"Assemble", " ", "@", " ", 
+     RowBox[{"Association", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+        RowBox[{"Array", "[", 
+         RowBox[{
+          RowBox[{"0", " ", "&"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"Length", " ", "@", " ", "xRowLabels"}], "}"}]}], "]"}]}], 
+       ",", "\n", "\t\t", 
+       RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}]}], 
+      "\n", "\t\t", "]"}]}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{
+     "0", ",", " ", "xRowLabels_List", ",", " ", "xColumnLabels_List"}], 
+     "]"}], " ", ":=", "\n", "\t", 
+    RowBox[{"Assemble", " ", "@", " ", 
+     RowBox[{"Association", "[", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+        RowBox[{"Array", "[", 
+         RowBox[{
+          RowBox[{"0", " ", "&"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"Length", " ", "@", " ", "xRowLabels"}], ",", " ", 
+            RowBox[{"Length", " ", "@", " ", "xColumnLabels"}]}], "}"}]}], 
+         "]"}]}], ",", "\n", "\t\t", 
+       RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}], ",",
+        "\n", "\t\t", 
+       RowBox[{
+       "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}], 
+      "\n", "\t\t", "]"}]}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{"1", ",", " ", "xLabels_List"}], "]"}], " ", ":=", "\n", "\t", 
+    RowBox[{"Association", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+       RowBox[{"IdentityMatrix", "[", 
+        RowBox[{"Length", " ", "@", " ", "xLabels"}], "]"}]}], ",", "\n", 
+      "\t\t", 
+      RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xLabels"}], ",", 
+      "\n", "\t\t", 
+      RowBox[{"\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xLabels"}]}], 
+     "\n", "\t\t", "]"}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{
+     "1", ",", " ", "xRowLabels_List", ",", " ", "xColumnLabels_List"}], 
+     "]"}], " ", ":=", "\n", "\t", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "xId", "}"}], ",", "\n", "\t\t", 
+      RowBox[{
+       RowBox[{"xId", " ", "=", " ", 
+        RowBox[{"Intersection", "[", 
+         RowBox[{"xColumnLabels", ",", " ", "xRowLabels"}], "]"}]}], ";", 
+       "\t", "\n", "\t\t", 
+       RowBox[{"Assemble", "[", "\n", "\t\t\t", 
+        RowBox[{
+         RowBox[{"Association", "[", "\n", "\t\t\t\t", 
+          RowBox[{
+           RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+            RowBox[{"IdentityMatrix", "[", 
+             RowBox[{"Length", " ", "@", " ", "xId"}], "]"}]}], ",", "\n", 
+           "\t\t\t\t", 
+           RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xId"}], ",", 
+           "\n", "\t\t\t\t", 
+           RowBox[{"\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xId"}]}], 
+          "\n", "\t\t\t\t", "]"}], ",", "\n", "\t\t\t", 
+         RowBox[{"Assemble", "[", 
+          RowBox[{"0", ",", " ", "xColumnLabels", ",", " ", "xRowLabels"}], 
+          "]"}]}], "\t", "\n", "\t\t\t", "]"}]}]}], "\t", "\n", "\t\t", 
+     "]"}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{"xFunction_", ",", " ", "xRowLabels_List"}], "]"}], " ", ":=", 
+    "\n", "\t", 
+    RowBox[{"Association", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+       RowBox[{"xFunction", " ", "/@", " ", "xRowLabels"}]}], ",", "\n", 
+      "\t\t", 
+      RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}]}], 
+     "\n", "\t\t", "]"}]}], "\n", "\n", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{
+     "xFunction_", ",", " ", "xRowLabels_List", ",", " ", 
+      "xColumnLabels_List"}], "]"}], " ", ":=", "\n", "\t", 
+    RowBox[{"Association", "[", "\n", "\t\t", 
+     RowBox[{
+      RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+       RowBox[{"Outer", "[", 
+        RowBox[{
+        "xFunction", ",", " ", "xRowLabels", ",", " ", "xColumnLabels"}], 
+        "]"}]}], ",", "\n", "\t\t", 
+      RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", "xRowLabels"}], ",", 
+      " ", "\n", "\t\t", 
+      RowBox[{
+      "\"\<Column Labels\>\"", " ", "\[Rule]", " ", "xColumnLabels"}]}], "\n",
+      "\t\t", "]"}]}]}]}]], "Code",
+ CellChangeTimes->{
+  3.6567591987591*^9, {3.6567592789591208`*^9, 3.656759279019751*^9}, {
+   3.656759335630871*^9, 3.656759335641623*^9}, {3.656759525247643*^9, 
+   3.656759547597198*^9}, {3.656759603372073*^9, 3.656759689934767*^9}, {
+   3.656760768872135*^9, 3.656760792198989*^9}, {3.656762063900014*^9, 
+   3.6567622458013906`*^9}, {3.656762292865596*^9, 3.656762509890128*^9}, {
+   3.656762574578652*^9, 3.6567625798049583`*^9}, {3.656762707010579*^9, 
+   3.656762712146637*^9}, {3.656762796728313*^9, 3.656763018385318*^9}, 
+   3.656763071071957*^9, {3.656763959414116*^9, 3.656764225799892*^9}, {
+   3.656764289603384*^9, 3.656764296403696*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AMatrixForm", "[", 
+   RowBox[{"xA_Association", ",", " ", 
+    RowBox[{"xL_:", " ", "Automatic"}]}], "]"}], " ", ":=", " ", "\n", "\t", 
+  RowBox[{"If", "[", 
+   RowBox[{
+    RowBox[{"KeyExistsQ", "[", 
+     RowBox[{"xA", ",", " ", "\"\<Column Labels\>\""}], "]"}], ",", "\n", 
+    "\t\t", 
+    RowBox[{"MatrixForm", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"xA", "[", "\"\<Matrix\>\"", "]"}], ",", " ", "\n", "\t\t\t", 
+      RowBox[{"TableHeadings", " ", "\[Rule]", " ", 
+       RowBox[{"(", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"xA", "[", "\"\<Row Labels\>\"", "]"}], ",", " ", 
+          RowBox[{"xA", "[", "\"\<Column Labels\>\"", "]"}]}], "}"}], ")"}]}],
+       ",", "\n", "\t\t\t", 
+      RowBox[{"TableAlignments", " ", "\[Rule]", " ", "xL"}]}], "\n", 
+     "\t\t\t", "]"}], ",", "\n", "\t\t", 
+    RowBox[{"MatrixForm", "[", "\n", "\t\t\t", 
+     RowBox[{
+      RowBox[{"xA", "[", "\"\<Matrix\>\"", "]"}], ",", " ", "\n", "\t\t\t", 
+      RowBox[{"TableHeadings", " ", "\[Rule]", " ", 
+       RowBox[{"(", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"xA", "[", "\"\<Row Labels\>\"", "]"}], ",", " ", "None"}], 
+         "}"}], ")"}]}], ",", "\n", "\t\t\t", 
+      RowBox[{"TableAlignments", " ", "\[Rule]", " ", "xL"}]}], "\n", 
+     "\t\t\t", "]"}]}], "\n", "\t\t", "]"}], "\t\t"}]], "Code",
+ CellChangeTimes->{{3.656759128564644*^9, 3.6567591445046177`*^9}, 
+   3.656759389377952*^9, {3.656759667037511*^9, 3.65675966705011*^9}, {
+   3.6567613858419533`*^9, 3.6567614003334723`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["EXAMPLES", "Section",
+ CellChangeTimes->{{3.6567611111065073`*^9, 3.6567611121933517`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"AMatrix", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"xRows_", ",", " ", "xCols_"}], "}"}], ",", " ", "xUniverse_"}], 
+   "]"}], " ", ":=", " ", 
+  RowBox[{"<|", "\n", "\t", 
+   RowBox[{
+    RowBox[{"\"\<Matrix\>\"", " ", "\[Rule]", " ", 
+     RowBox[{"RandomInteger", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0", ",", " ", "10"}], "}"}], ",", " ", 
+       RowBox[{"{", 
+        RowBox[{"xRows", ",", " ", "xCols"}], "}"}]}], "]"}]}], ",", "\n", 
+    "\t", 
+    RowBox[{"\"\<Row Labels\>\"", " ", "\[Rule]", " ", 
+     RowBox[{"RandomSample", "[", 
+      RowBox[{
+       RowBox[{"First", " ", "@", " ", "xUniverse"}], ",", " ", "xRows"}], 
+      "]"}]}], ",", "\n", "\t", 
+    RowBox[{"\"\<Column Labels\>\"", " ", "\[Rule]", " ", 
+     RowBox[{"RandomSample", "[", 
+      RowBox[{
+       RowBox[{"Last", " ", "@", " ", "xUniverse"}], ",", " ", "xCols"}], 
+      "]"}]}]}], "\n", "\t", "|>"}]}]], "Code",
+ CellChangeTimes->{{3.656761128685601*^9, 3.656761246737571*^9}, {
+  3.656761478071373*^9, 3.65676147927104*^9}, {3.656762085069234*^9, 
+  3.656762089339759*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "1", "]"}], " ", "=", " ", 
+   RowBox[{"AMatrix", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"3", ",", " ", "3"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Range", " ", "@@", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "10"}], "}"}]}], ",", " ", 
+       RowBox[{"Range", " ", "@@", " ", 
+        RowBox[{"{", 
+         RowBox[{"11", ",", " ", "20"}], "}"}]}]}], "}"}]}], "]"}]}], ";", 
+  " ", 
+  RowBox[{
+   RowBox[{"m", "[", "1", "]"}], " ", "//", " ", "AMatrixForm"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "2", "]"}], " ", "=", " ", 
+   RowBox[{"AMatrix", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"4", ",", " ", "5"}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Range", " ", "@@", " ", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", " ", "10"}], "}"}]}], ",", " ", 
+       RowBox[{"Range", " ", "@@", " ", 
+        RowBox[{"{", 
+         RowBox[{"11", ",", " ", "20"}], "}"}]}]}], "}"}]}], "]"}]}], ";", 
+  " ", 
+  RowBox[{
+   RowBox[{"m", "[", "2", "]"}], " ", "//", " ", "AMatrixForm"}]}]}], "Code",
+ CellChangeTimes->{{3.656761254889317*^9, 3.656761370035901*^9}, {
+  3.65676141474356*^9, 3.656761458779046*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["14",
+        HoldForm], 
+       TagBox["15",
+        HoldForm], 
+       TagBox["20",
+        HoldForm]},
+      {
+       TagBox["8",
+        HoldForm], "1", "0", "4"},
+      {
+       TagBox["0",
+        HoldForm], "8", "9", "10"},
+      {
+       TagBox["5",
+        HoldForm], "8", "4", "6"}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, TableHeadings -> {{8, 0, 5}, {14, 15, 20}}, TableAlignments -> 
+    Automatic]]]], "Output",
+ CellChangeTimes->{{3.656761358318632*^9, 3.656761370579771*^9}, {
+   3.656761404487742*^9, 3.6567614809781313`*^9}, {3.656763137909472*^9, 
+   3.6567631496286573`*^9}, 3.65676621015905*^9}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["15",
+        HoldForm], 
+       TagBox["18",
+        HoldForm], 
+       TagBox["12",
+        HoldForm], 
+       TagBox["16",
+        HoldForm], 
+       TagBox["14",
+        HoldForm]},
+      {
+       TagBox["2",
+        HoldForm], "9", "3", "3", "5", "10"},
+      {
+       TagBox["1",
+        HoldForm], "7", "10", "2", "2", "5"},
+      {
+       TagBox["10",
+        HoldForm], "5", "8", "3", "9", "7"},
+      {
+       TagBox["4",
+        HoldForm], "10", "9", "8", "9", "1"}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, TableHeadings -> {{2, 1, 10, 4}, {15, 18, 12, 16, 14}}, 
+    TableAlignments -> Automatic]]]], "Output",
+ CellChangeTimes->{{3.656761358318632*^9, 3.656761370579771*^9}, {
+   3.656761404487742*^9, 3.6567614809781313`*^9}, {3.656763137909472*^9, 
+   3.6567631496286573`*^9}, 3.6567662101711607`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "3", "]"}], " ", "=", " ", 
+   RowBox[{"Assemble", "[", 
+    RowBox[{
+     RowBox[{"m", "[", "1", "]"}], ",", " ", 
+     RowBox[{"m", "[", "2", "]"}]}], "]"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"m", "[", "3", "]"}], " ", "//", " ", "AMatrixForm"}]}]], "Code",
+ CellChangeTimes->{{3.656761516496337*^9, 3.65676153913524*^9}, 
+   3.6567625960376062`*^9, {3.65676275605315*^9, 3.656762757468629*^9}, {
+   3.6567630477367487`*^9, 3.656763054692855*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["12",
+        HoldForm], 
+       TagBox["14",
+        HoldForm], 
+       TagBox["15",
+        HoldForm], 
+       TagBox["16",
+        HoldForm], 
+       TagBox["18",
+        HoldForm], 
+       TagBox["20",
+        HoldForm]},
+      {
+       TagBox["0",
+        HoldForm], "0", "8", "9", "0", "0", "10"},
+      {
+       TagBox["1",
+        HoldForm], "2", "5", "7", "2", "10", "0"},
+      {
+       TagBox["2",
+        HoldForm], "3", "10", "9", "5", "3", "0"},
+      {
+       TagBox["4",
+        HoldForm], "8", "1", "10", "9", "9", "0"},
+      {
+       TagBox["5",
+        HoldForm], "0", "8", "4", "0", "0", "6"},
+      {
+       TagBox["8",
+        HoldForm], "0", "1", "0", "0", "0", "4"},
+      {
+       TagBox["10",
+        HoldForm], "3", "7", "5", "9", "8", "0"}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, 
+    TableHeadings -> {{0, 1, 2, 4, 5, 8, 10}, {12, 14, 15, 16, 18, 20}}, 
+    TableAlignments -> Automatic]]]], "Output",
+ CellChangeTimes->{{3.656761517009118*^9, 3.656761539366703*^9}, 
+   3.656762596439666*^9, 3.656762757980679*^9, {3.65676304368918*^9, 
+   3.656763055300939*^9}, {3.656763142570734*^9, 3.656763160454335*^9}, 
+   3.656766210213719*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"m", "[", "4", "]"}], " ", "=", " ", 
+  RowBox[{"Assemble", "[", 
+   RowBox[{
+    RowBox[{"Assemble", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"1", ",", " ", "3", ",", " ", "2"}], "}"}], ",", " ", 
+      RowBox[{"{", 
+       RowBox[{"\"\<a\>\"", ",", " ", "\"\<c\>\"", ",", " ", "\"\<b\>\""}], 
+       "}"}]}], "]"}], ",", " ", 
+    RowBox[{"Assemble", "[", 
+     RowBox[{"ToExpression", ",", " ", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<c\>\"", ",", " ", "\"\<p\>\"", ",", " ", "\"\<q\>\"", ",", " ", 
+        "\"\<r\>\""}], "}"}]}], "]"}]}], "]"}]}]], "Code",
+ CellChangeTimes->{{3.65676261169203*^9, 3.656762637909821*^9}, {
+  3.65676272481625*^9, 3.656762728246619*^9}, {3.656763083817478*^9, 
+  3.65676308532918*^9}, {3.6567644006876993`*^9, 3.656764531600299*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"Matrix\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"1", ",", "2", ",", 
+      RowBox[{"3", "+", "c"}], ",", "p", ",", "q", ",", "r"}], "}"}]}], ",", 
+   RowBox[{"\<\"Row Labels\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\<\"a\"\>", ",", "\<\"b\"\>", ",", "\<\"c\"\>", 
+      ",", "\<\"p\"\>", ",", "\<\"q\"\>", ",", "\<\"r\"\>"}], "}"}]}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{
+  3.6567626383149843`*^9, {3.656762719860778*^9, 3.656762728525209*^9}, {
+   3.656763080894627*^9, 3.656763085551446*^9}, {3.656764490599659*^9, 
+   3.656764532064145*^9}, 3.656766210263174*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "\"\<X\>\"", "]"}], " ", "=", " ", 
+   RowBox[{"Assemble", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Subscript", "[", 
+       RowBox[{"X", ",", " ", "#1", ",", " ", "#2"}], "]"}], "&"}], ",", " ", 
+     
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<s\>\"", ",", " ", "\"\<p\>\"", ",", " ", "\"\<q\>\"", ",", " ", 
+       "\"\<r\>\""}], "}"}], ",", "  ", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<d\>\"", ",", " ", "\"\<e\>\"", ",", " ", "\"\<a\>\"", ",", " ", 
+       "\"\<c\>\""}], "}"}]}], "]"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"m", "[", "\"\<X\>\"", "]"}], " ", "//", " ", 
+   "AMatrixForm"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "\"\<Y\>\"", "]"}], " ", "=", " ", 
+   RowBox[{"Assemble", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Subscript", "[", 
+       RowBox[{"Y", ",", " ", "#1", ",", " ", "#2"}], "]"}], "&"}], ",", " ", 
+     
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<u\>\"", ",", " ", "\"\<r\>\"", ",", " ", "\"\<v\>\"", ",", " ", 
+       "\"\<s\>\""}], "}"}], ",", "  ", 
+     RowBox[{"{", 
+      RowBox[{
+      "\"\<d\>\"", ",", " ", "\"\<e\>\"", ",", " ", "\"\<f\>\"", ",", " ", 
+       "\"\<g\>\""}], "}"}]}], "]"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"m", "[", "\"\<Y\>\"", "]"}], " ", "//", " ", 
+   "AMatrixForm"}]}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"m", "[", "\"\<Z\>\"", "]"}], " ", "=", " ", 
+   RowBox[{"Assemble", "[", 
+    RowBox[{
+     RowBox[{"m", "[", "\"\<X\>\"", "]"}], ",", " ", 
+     RowBox[{"m", "[", "\"\<Y\>\"", "]"}]}], "]"}]}], ";", " ", 
+  RowBox[{
+   RowBox[{"m", "[", "\"\<Z\>\"", "]"}], " ", "//", " ", 
+   "AMatrixForm"}]}]}], "Code",
+ CellChangeTimes->{{3.656764640686984*^9, 3.656764790291498*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["\<\"d\"\>",
+        HoldForm], 
+       TagBox["\<\"e\"\>",
+        HoldForm], 
+       TagBox["\<\"a\"\>",
+        HoldForm], 
+       TagBox["\<\"c\"\>",
+        HoldForm]},
+      {
+       TagBox["\<\"s\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"c\"\>"}]]},
+      {
+       TagBox["\<\"p\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"c\"\>"}]]},
+      {
+       TagBox["\<\"q\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"c\"\>"}]]},
+      {
+       TagBox["\<\"r\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"c\"\>"}]]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, TableHeadings -> {{"s", "p", "q", "r"}, {"d", "e", "a", "c"}}, 
+    TableAlignments -> Automatic]]]], "Output",
+ CellChangeTimes->{{3.656764711656315*^9, 3.656764790501143*^9}, 
+   3.6567662103139343`*^9}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["\<\"d\"\>",
+        HoldForm], 
+       TagBox["\<\"e\"\>",
+        HoldForm], 
+       TagBox["\<\"f\"\>",
+        HoldForm], 
+       TagBox["\<\"g\"\>",
+        HoldForm]},
+      {
+       TagBox["\<\"u\"\>",
+        HoldForm], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"r\"\>",
+        HoldForm], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"v\"\>",
+        HoldForm], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"s\"\>",
+        HoldForm], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"g\"\>"}]]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, TableHeadings -> {{"u", "r", "v", "s"}, {"d", "e", "f", "g"}}, 
+    TableAlignments -> Automatic]]]], "Output",
+ CellChangeTimes->{{3.656764711656315*^9, 3.656764790501143*^9}, 
+   3.6567662103256083`*^9}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", 
+   TagBox[GridBox[{
+      {
+       StyleBox["\[Null]",
+        ShowStringCharacters->False], 
+       TagBox["\<\"a\"\>",
+        HoldForm], 
+       TagBox["\<\"c\"\>",
+        HoldForm], 
+       TagBox["\<\"d\"\>",
+        HoldForm], 
+       TagBox["\<\"e\"\>",
+        HoldForm], 
+       TagBox["\<\"f\"\>",
+        HoldForm], 
+       TagBox["\<\"g\"\>",
+        HoldForm]},
+      {
+       TagBox["\<\"p\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"c\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"p\"\>", ",", "\<\"e\"\>"}]], "0", "0"},
+      {
+       TagBox["\<\"q\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"c\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"q\"\>", ",", "\<\"e\"\>"}]], "0", "0"},
+      {
+       TagBox["\<\"r\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"c\"\>"}]], 
+       RowBox[{
+        SubscriptBox["X", 
+         RowBox[{"\<\"r\"\>", ",", "\<\"d\"\>"}]], "+", 
+        SubscriptBox["Y", 
+         RowBox[{"\<\"r\"\>", ",", "\<\"d\"\>"}]]}], 
+       RowBox[{
+        SubscriptBox["X", 
+         RowBox[{"\<\"r\"\>", ",", "\<\"e\"\>"}]], "+", 
+        SubscriptBox["Y", 
+         RowBox[{"\<\"r\"\>", ",", "\<\"e\"\>"}]]}], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"r\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"s\"\>",
+        HoldForm], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"a\"\>"}]], 
+       SubscriptBox["X", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"c\"\>"}]], 
+       RowBox[{
+        SubscriptBox["X", 
+         RowBox[{"\<\"s\"\>", ",", "\<\"d\"\>"}]], "+", 
+        SubscriptBox["Y", 
+         RowBox[{"\<\"s\"\>", ",", "\<\"d\"\>"}]]}], 
+       RowBox[{
+        SubscriptBox["X", 
+         RowBox[{"\<\"s\"\>", ",", "\<\"e\"\>"}]], "+", 
+        SubscriptBox["Y", 
+         RowBox[{"\<\"s\"\>", ",", "\<\"e\"\>"}]]}], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"s\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"u\"\>",
+        HoldForm], "0", "0", 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"u\"\>", ",", "\<\"g\"\>"}]]},
+      {
+       TagBox["\<\"v\"\>",
+        HoldForm], "0", "0", 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"d\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"e\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"f\"\>"}]], 
+       SubscriptBox["Y", 
+        RowBox[{"\<\"v\"\>", ",", "\<\"g\"\>"}]]}
+     },
+     GridBoxAlignment->{
+      "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}},
+        "RowsIndexed" -> {}},
+     GridBoxDividers->{
+      "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+       "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+     GridBoxSpacings->{"Columns" -> {
+         Offset[0.27999999999999997`], {
+          Offset[0.7]}, 
+         Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+         Offset[0.2], {
+          Offset[0.4]}, 
+         Offset[0.2]}, "RowsIndexed" -> {}}],
+    {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}], 
+   "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[
+   BoxForm`e$, 
+    TableHeadings -> {{"p", "q", "r", "s", "u", "v"}, {
+      "a", "c", "d", "e", "f", "g"}}, TableAlignments -> 
+    Automatic]]]], "Output",
+ CellChangeTimes->{{3.656764711656315*^9, 3.656764790501143*^9}, 
+   3.656766210334024*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"m", "[", "10", "]"}], " ", "=", " ", 
+     RowBox[{"Assemble", "[", "\n", "\t", 
+      RowBox[{
+       RowBox[{"AMatrix", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"100", ",", " ", "100"}], "}"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Range", " ", "@@", " ", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", " ", "1000"}], "}"}]}], ",", " ", 
+           RowBox[{"Range", " ", "@@", " ", 
+            RowBox[{"{", 
+             RowBox[{"1001", ",", " ", "2000"}], "}"}]}]}], "}"}]}], "]"}], 
+       ",", "\n", "\t", 
+       RowBox[{"AMatrix", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"100", ",", " ", "100"}], "}"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"Range", " ", "@@", " ", 
+            RowBox[{"{", 
+             RowBox[{"1", ",", " ", "1000"}], "}"}]}], ",", " ", 
+           RowBox[{"Range", " ", "@@", " ", 
+            RowBox[{"{", 
+             RowBox[{"1001", ",", " ", "2000"}], "}"}]}]}], "}"}]}], "]"}]}], 
+      "\n", "\t", "]"}]}], ";"}], " ", "//", " ", "Timing"}], "\n"}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"m", "[", "11", "]"}], " ", "=", " ", 
+    RowBox[{"Assemble", "[", "\n", "\t", 
+     RowBox[{
+      RowBox[{"AMatrix", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"500", ",", " ", "500"}], "}"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Range", " ", "@@", " ", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", " ", "1000"}], "}"}]}], ",", " ", 
+          RowBox[{"Range", " ", "@@", " ", 
+           RowBox[{"{", 
+            RowBox[{"1001", ",", " ", "2000"}], "}"}]}]}], "}"}]}], "]"}], 
+      ",", "\n", "\t", 
+      RowBox[{"AMatrix", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"500", ",", " ", "500"}], "}"}], ",", " ", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"Range", " ", "@@", " ", 
+           RowBox[{"{", 
+            RowBox[{"1", ",", " ", "1000"}], "}"}]}], ",", " ", 
+          RowBox[{"Range", " ", "@@", " ", 
+           RowBox[{"{", 
+            RowBox[{"1001", ",", " ", "2000"}], "}"}]}]}], "}"}]}], "]"}]}], 
+     "\n", "\t", "]"}]}], ";"}], " ", "//", " ", "Timing"}]}], "Code",
+ CellChangeTimes->{{3.65676166416285*^9, 3.656761691370243*^9}, {
+  3.656761726979357*^9, 3.6567617887293997`*^9}, {3.656763196016466*^9, 
+  3.6567632054685297`*^9}, {3.656763390297722*^9, 3.6567633986527557`*^9}, {
+  3.6567634319043617`*^9, 3.656763444312911*^9}, {3.656763478066901*^9, 
+  3.656763483673093*^9}, {3.6567648320307407`*^9, 3.656764832428282*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"0.208856`", ",", "Null"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.656761905662787*^9, {3.656763189638328*^9, 3.6567632062269506`*^9}, {
+   3.656763395731544*^9, 3.656763399555931*^9}, 3.6567634453517113`*^9, 
+   3.656763484997971*^9, 3.656764833303836*^9, 3.6567662105709057`*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"6.300728`", ",", "Null"}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.656761905662787*^9, {3.656763189638328*^9, 3.6567632062269506`*^9}, {
+   3.656763395731544*^9, 3.656763399555931*^9}, 3.6567634453517113`*^9, 
+   3.656763484997971*^9, 3.656764833303836*^9, 3.6567662168975286`*^9}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{808, 678},
+WindowMargins->{{141, Automatic}, {Automatic, 18}},
+FrontEndVersion->"10.2 for Mac OS X x86 (32-bit, 64-bit Kernel) (July 29, \
+2015)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 100, 1, 64, "Section"],
+Cell[683, 25, 1908, 50, 205, "Code"],
+Cell[2594, 77, 15711, 376, 1803, "Code"],
+Cell[18308, 455, 1576, 35, 238, "Code"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[19921, 495, 97, 1, 64, "Section"],
+Cell[20021, 498, 1126, 29, 114, "Code"],
+Cell[CellGroupData[{
+Cell[21172, 531, 1279, 38, 66, "Code"],
+Cell[22454, 571, 1467, 44, 92, "Output"],
+Cell[23924, 617, 1667, 51, 110, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[25628, 673, 506, 12, 49, "Code"],
+Cell[26137, 687, 2018, 64, 160, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28192, 756, 827, 20, 50, "Code"],
+Cell[29022, 778, 680, 15, 28, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[29739, 798, 1744, 51, 82, "Code"],
+Cell[31486, 851, 2722, 80, 118, "Output"],
+Cell[34211, 933, 2722, 80, 118, "Output"],
+Cell[36936, 1015, 4336, 128, 156, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[41309, 1148, 2694, 70, 177, "Code"],
+Cell[44006, 1220, 323, 6, 28, "Output"],
+Cell[44332, 1228, 323, 6, 28, "Output"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

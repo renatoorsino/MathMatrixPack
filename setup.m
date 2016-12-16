@@ -42,6 +42,7 @@
 <<MathMatrixPack/matrix/Jacobi.m
 <<MathMatrixPack/matrix/OrthogonalComplement.m
 <<MathMatrixPack/matrix/LSLinearizedOrthogonalComplement.m
+<<MathMatrixPack/matrix/SLinearizedPseudoInverse.m
 <<MathMatrixPack/matrix/LSSolver.m
 <<MathMatrixPack/matrix/Linearize.m
 
